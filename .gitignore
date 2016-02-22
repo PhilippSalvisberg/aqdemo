@@ -1,6 +1,7 @@
 *.class
 *._trace
 *.xtendbin
+*.DS_Store
 **/target
 **/test-output
 **/xtend-gen
