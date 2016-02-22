@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="aqdemo" parallel="methods" thread-count="4">
+	<test name="Demo1" group-by-instances="true">
+		<classes>
+			<class name="com.trivadis.aqdemo.tests.SinglePrintTextServiceDemo" />
+		</classes>
+	</test>
+	<test name="Demo2" group-by-instances="true">
+		<classes>
+			<class name="com.trivadis.aqdemo.tests.MultiPrintTextServiceDemo" />
+		</classes>
+	</test>
+	<test name="Demo3" group-by-instances="true">
+		<classes>
+			<class name="com.trivadis.aqdemo.tests.BlockingSlowPrintTextServiceDemo" />
+		</classes>
+	</test>
+	<test name="Demo4" group-by-instances="true">
+		<classes>
+			<class name="com.trivadis.aqdemo.tests.NonBlockingSlowPrintTextServiceDemo" />
+		</classes>
+	</test>
+</suite>
