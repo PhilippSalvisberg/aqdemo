@@ -20,4 +20,9 @@
 			<class name="com.trivadis.aqdemo.tests.NonBlockingSlowPrintTextServiceDemo" />
 		</classes>
 	</test>
+	<test name="Demo5" group-by-instances="true">
+		<classes>
+			<class name="com.trivadis.aqdemo.tests.AsyncPrimeFactorizationServiceDemo" />
+		</classes>
+	</test>
 </suite>

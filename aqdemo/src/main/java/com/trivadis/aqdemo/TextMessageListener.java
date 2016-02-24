@@ -2,7 +2,6 @@ package com.trivadis.aqdemo;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.jms.JMSException;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -61,7 +60,7 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 				}
 				response.setJMSCorrelationID(corrId);
 			}
-			
+
 			// instantiate service and process request
 			String beanName = request.getStringProperty("beanName");
 			if (beanName != null) {
@@ -79,9 +78,10 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 			} else {
 				logger.error("No JMS property beanName found. Cannot process message.");
 			}
-		} catch (JMSException e) {
-			logger.error("message " + messageId + " processed with error: " + e.getMessage());
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			String errorText = "message " + messageId + " processed with error: " + e.getMessage();
+			logger.error(errorText);
+			throw new RuntimeException(errorText);
 		}
 	}
 }

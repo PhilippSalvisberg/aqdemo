@@ -13,12 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import oracle.jms.AQjmsFactory;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 
+@EnableTransactionManagement
 @Configuration
 public class AppConfig {
 	private final Logger logger = Logger.getLogger(AppConfig.class);
@@ -64,7 +69,7 @@ public class AppConfig {
 		logger.info("messageListener() called.");
 		return new TextMessageListener();
 	}
-	
+
 	@Bean
 	public DefaultMessageListenerContainer highPriorityJmsContainer() {
 		logger.info("highPriorityJmsContainer() called.");
@@ -98,7 +103,7 @@ public class AppConfig {
 		cont.setMaxMessagesPerTask(1);
 		return cont;
 	}
-
+	
 	@Bean
 	public DataSource aqDataSource() {
 		logger.info("aqDataSource() called.");
@@ -115,4 +120,10 @@ public class AppConfig {
 		}
 		return pds;
 	}
+	
+    @Bean
+    public PlatformTransactionManager txManager() {
+        return new DataSourceTransactionManager(aqDataSource());
+    }
+	
 }
