@@ -13,7 +13,7 @@ public class ShutdownThread {
 			@Override
 			public void run() {
 				context.close();
-				logger.info("Migration factory terminated gracefully.");
+				logger.info("Application terminated gracefully.");
 			}
 		});
 	}
