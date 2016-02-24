@@ -38,7 +38,7 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 	}
 
 	@Test()
-	def enqueue() {
+	def requests() {
 		val stmt = '''
 			DECLARE
 			   l_enqueue_options sys.dbms_aq.enqueue_options_t;
@@ -74,8 +74,8 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 		logger.info("4 requests enqueued.")
 	}
 
-	@Test(dependsOnMethods=#["enqueue"])
-	def dequeue() {
+	@Test (dependsOnMethods=#["requests"])
+	def responses() {
 		val txStatus = txManager.getTransaction(new DefaultTransactionDefinition())
 		jdbcTemplate.execute('BEGIN dbms_output.enable(100000); END;')
 		val stmt = '''
