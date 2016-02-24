@@ -51,6 +51,10 @@ public class AppConfig {
 	@Qualifier("appName")
 	private String appName = "Java";
 
+	@Autowired(required = false)
+	@Qualifier("concurrency")
+	private String concurrency = "1-4";
+	
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		logger.info("connectionFactory() called.");
@@ -81,7 +85,7 @@ public class AppConfig {
 		cont.setSubscriptionName(appName + "_High_Priority");
 		cont.setSubscriptionDurable(true); // allow enqueue when service is down
 		cont.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
-		cont.setConcurrency("1-4");
+		cont.setConcurrency(concurrency);
 		cont.setMaxMessagesPerTask(1);
 		return cont;
 	}
@@ -98,7 +102,7 @@ public class AppConfig {
 		cont.setSubscriptionName(appName + "_Low_Priority");
 		cont.setSubscriptionDurable(true); // allow enqueue when service is down
 		cont.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
-		cont.setConcurrency("1-4");
+		cont.setConcurrency(concurrency);
 		cont.setMaxMessagesPerTask(1);
 		return cont;
 	}

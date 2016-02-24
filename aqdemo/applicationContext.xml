@@ -25,4 +25,8 @@
 	<bean id="aqPassword" class="java.lang.String">
 		<constructor-arg value="aqdemo" />
 	</bean>
+
+	<bean id="concurrency" class="java.lang.String">
+		<constructor-arg value="1-4" />
+	</bean>
 </beans>

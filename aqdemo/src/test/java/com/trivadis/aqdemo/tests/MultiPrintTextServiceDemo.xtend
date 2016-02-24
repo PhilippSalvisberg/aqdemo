@@ -34,7 +34,7 @@ class MultiPrintTextServiceDemo extends AbstractTestNGSpringContextTests {
 		return currentInvocation
 	}
 
-	@Test(invocationCount=4, threadPoolSize=1)
+	@Test(invocationCount=5, threadPoolSize=1)
 	def enqueueMultiMessages() {
 		val invocation = increment()
 		val stmt = '''
@@ -47,7 +47,6 @@ class MultiPrintTextServiceDemo extends AbstractTestNGSpringContextTests {
 			   FOR i IN 1 .. 200
 			   LOOP
 			      l_jms_message.clear_properties();
-			      l_message_props.correlation := sys_guid;
 			      l_message_props.priority := 1;
 			      l_message_props.recipient_list(1) := sys.aq$_agent(NULL, 'REQUESTS_AQ', 0);
 			      l_jms_message.set_string_property('appName', 'Java');
@@ -69,7 +68,7 @@ class MultiPrintTextServiceDemo extends AbstractTestNGSpringContextTests {
 	@AfterClass
 	def tearDown() {
 		// give MessageListener some time to complete
-		Thread.sleep(4000)
+		Thread.sleep(3000)
 		logger.info("test completed.")
 	}	
 }

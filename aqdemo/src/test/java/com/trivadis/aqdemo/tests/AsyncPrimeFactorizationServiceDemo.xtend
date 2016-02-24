@@ -17,7 +17,7 @@ import org.testng.annotations.AfterClass
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
 
-@Test(threadPoolSize=4)
+@Test
 @ContextConfiguration(locations=#["file:src/test/resources/applicationContext.xml"])
 class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests {
 	@Autowired
@@ -41,12 +41,11 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 	def requests() {
 		val stmt = '''
 			DECLARE
-			   l_enqueue_options sys.dbms_aq.enqueue_options_t;
-			   l_message_props   sys.dbms_aq.message_properties_t;
-			   l_jms_message     sys.aq$_jms_text_message := sys.aq$_jms_text_message.construct;
-			   l_msgid           RAW(16);
-			   --
 			   PROCEDURE enq(in_payload IN INTEGER) IS
+			      l_enqueue_options sys.dbms_aq.enqueue_options_t;
+			      l_message_props   sys.dbms_aq.message_properties_t;
+			      l_jms_message     sys.aq$_jms_text_message := sys.aq$_jms_text_message.construct;
+			      l_msgid           RAW(16);
 			   BEGIN
 			      l_jms_message.clear_properties();
 			      l_message_props.correlation := sys_guid;
@@ -67,11 +66,12 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 			   enq(12345678901234567890);
 			   enq(4444444444444464);
 			   enq(4444444444444463);
-			   enq(1315172931);
+			   enq(1588689192055597);
+			   enq(3928720489);
 			END;
 		'''
 		jdbcTemplate.execute(stmt)
-		logger.info("4 requests enqueued.")
+		logger.info("requests enqueued.")
 	}
 
 	@Test (dependsOnMethods=#["requests"])
@@ -85,7 +85,7 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 			   l_message_props   sys.dbms_aq.message_properties_t;
 			   l_msgid           RAW(16);
 			   l_text            VARCHAR2(4000);
-			   l_count           INTEGER := 0;
+			   l_count           INTEGER;
 			   e_no_msg EXCEPTION;
 			   PRAGMA EXCEPTION_INIT(e_no_msg, -25228);
 			BEGIN
@@ -102,11 +102,15 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 			         l_jms_message.get_text(l_text);
 			         dbms_output.put_line(l_text);
 			         COMMIT;
-			         l_count := l_count + 1;
 			      EXCEPTION
 			         WHEN e_no_msg THEN
-			            dbms_output.put_line('no message found (' || l_count || ')');
-			            EXIT WHEN l_count >= 4;
+			            SELECT count(*) 
+			              INTO l_count
+			              FROM aqdemo.aq$requests_qt t 
+			             WHERE msg_state = 'READY'
+			               AND t.user_data.get_string_property('beanName') = 'PrimeFactorizationService';
+			            dbms_output.put_line('no responses found, ' || l_count || ' requests pending.');
+			            EXIT WHEN l_count = 0;
 			      END;
 			   END LOOP;
 			END;
