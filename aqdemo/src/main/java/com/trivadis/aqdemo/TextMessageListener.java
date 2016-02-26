@@ -2,6 +2,7 @@ package com.trivadis.aqdemo;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.jms.JMSException;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -68,7 +69,8 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 				service.process(request, response);
 				logger.debug("service " + beanName + " processed for message " + messageId + ".");
 				if (response != null) {
-					// create a publisher using the current database session (connection)
+					// create a publisher using the current database session
+					// (connection)
 					Topic topic = session.createTopic(responseQueueName);
 					AQjmsTopicPublisher publisher = (AQjmsTopicPublisher) ((TopicSession) session)
 							.createPublisher(topic);
@@ -88,9 +90,15 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 							+ Long.toString(timeToLive) + ").");
 				}
 			} else {
+				session.rollback(); // increment retry count / expire message
 				logger.error("No JMS property beanName found. Cannot process message.");
 			}
 		} catch (Exception e) {
+			try {
+				session.rollback(); // increment retry count / expire message
+			} catch (JMSException e1) {
+				logger.error("Cound not rollback session (to increment retry count). Error was : " + e1.getMessage());
+			} // expire message
 			String errorText = "message " + messageId + " processed with error: " + e.getMessage();
 			logger.error(errorText);
 			throw new RuntimeException(errorText);
