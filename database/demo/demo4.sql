@@ -1,7 +1,7 @@
-SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON
+SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON TIMING OFF
 
 REM ===========================================================================
-REM 1. Slow Print Text Service (non-blocking) 
+REM 1. Slow print text service calls (non-blocking) 
 REM ===========================================================================
 
 DECLARE
@@ -30,7 +30,7 @@ END;
 PAUSE
 CLEAR SCREEN
 REM ===========================================================================
-REM 2. Fast Print Text Service (not blocked) 
+REM 2. Fast print text Service calls (not blocked) 
 REM ===========================================================================
 DECLARE
    l_enqueue_options sys.dbms_aq.enqueue_options_t;

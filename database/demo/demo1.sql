@@ -1,15 +1,11 @@
 SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON TIMING OFF
 
-COLUMN MSG_STATE FORMAT A9
-COLUMN MSG_TEXT FORMAT A30
-
-ALTER SESSION SET nls_date_format = 'YYYY-MM-DD';
-ALTER SESSION SET nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS';
-ALTER SESSION SET nls_timestamp_tz_format = 'YYYY-MM-DD HH24:MI:SS';
+COLUMN msg_state FORMAT A9
+COLUMN msg_text FORMAT A30
 
 CLEAR SCREEN
 REM ===========================================================================
-REM 1. Print Text Service - Single Message
+REM 1. Print text service - single message
 REM ===========================================================================
 
 DECLARE
@@ -39,7 +35,7 @@ SELECT msg_id, msg_state, retry_count, t.user_data.text_vc AS msg_text
 PAUSE
 CLEAR SCREEN
 REM ===========================================================================
-REM 2. Wrong Bean
+REM 2. Wrong bean
 REM ===========================================================================
 
 DECLARE

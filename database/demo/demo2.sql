@@ -1,7 +1,7 @@
-SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON
+SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON TIMING OFF
 
 REM ===========================================================================
-REM 1. Print Text Service - Multiple Messages
+REM 1. Print text service - multiple messages
 REM ===========================================================================
 
 DECLARE

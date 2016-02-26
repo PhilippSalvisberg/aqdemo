@@ -1,4 +1,4 @@
-SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON
+SET ECHO ON TERMOUT ON SERVEROUTPUT ON SIZE 1000000 PAGESIZE 100 LINESIZE 250 FEEDBACK ON TIMING OFF
 
 REM ===========================================================================
 REM 1. Asynchronous prime factorization service Calls (enqueue) 
@@ -37,7 +37,7 @@ END;
 PAUSE
 CLEAR SCREEN
 REM ===========================================================================
-REM 2. asynchronous prime factorization service call results (dequeue) 
+REM 2. Asynchronous prime factorization service call results (dequeue) 
 REM ===========================================================================
 DECLARE
    l_jms_message     sys.aq$_jms_text_message;
