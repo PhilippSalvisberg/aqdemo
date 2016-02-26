@@ -85,8 +85,9 @@ public class AppConfig {
 		cont.setSubscriptionName(appName + "_High_Priority");
 		cont.setSubscriptionDurable(true); // allow enqueue when service is down
 		cont.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
+		cont.setSessionTransacted(true);
 		cont.setConcurrency(concurrency);
-		cont.setMaxMessagesPerTask(1);
+		cont.setMaxMessagesPerTask(10);
 		return cont;
 	}
 
@@ -102,6 +103,7 @@ public class AppConfig {
 		cont.setSubscriptionName(appName + "_Low_Priority");
 		cont.setSubscriptionDurable(true); // allow enqueue when service is down
 		cont.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
+		cont.setSessionTransacted(true);
 		cont.setConcurrency(concurrency);
 		cont.setMaxMessagesPerTask(1);
 		return cont;
