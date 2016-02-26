@@ -48,7 +48,6 @@ class MultiPrintTextServiceDemo extends AbstractTestNGSpringContextTests {
 			   LOOP
 			      l_jms_message.clear_properties();
 			      l_message_props.priority := 1;
-			      l_message_props.recipient_list(1) := sys.aq$_agent(NULL, 'REQUESTS_AQ', 0);
 			      l_jms_message.set_string_property('appName', 'Java');
 			      l_jms_message.set_string_property('beanName', 'PrintTextService');
 			      l_jms_message.set_text('Hello Java Service ' || i || ' («invocation»)!');

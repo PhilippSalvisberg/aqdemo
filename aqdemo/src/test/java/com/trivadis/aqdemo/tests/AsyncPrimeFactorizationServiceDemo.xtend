@@ -50,7 +50,6 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 			      l_jms_message.clear_properties();
 			      l_message_props.correlation := sys_guid;
 			      l_message_props.priority := 3;
-			      l_message_props.recipient_list(1) := sys.aq$_agent(NULL, 'REQUESTS_AQ', 0);
 			      l_jms_message.header.set_replyto(sys.aq$_agent('PLSQL', 'RESPONSES_AQ', 0));
 			      l_jms_message.set_string_property('appName', 'Java');
 			      l_jms_message.set_string_property('beanName', 'PrimeFactorizationService');
