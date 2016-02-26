@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+import org.testng.Assert
 import org.testng.annotations.AfterClass
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
@@ -26,8 +27,8 @@ class SyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests
 	def setup() {
 		jdbcTemplate = new JdbcTemplate(aqDataSource)
 		val stmt = '''
-			CREATE OR REPLACE FUNCTION get_prime_factorization(in_number  IN INTEGER,
-			                                                   in_timeout IN INTEGER DEFAULT 30)
+			CREATE OR REPLACE FUNCTION get_prime_fact(in_number  IN INTEGER,
+			                                          in_timeout IN INTEGER DEFAULT 30)
 			   RETURN VARCHAR2 IS
 			   PRAGMA AUTONOMOUS_TRANSACTION;
 			   l_correlation VARCHAR2(128);
@@ -42,7 +43,6 @@ class SyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests
 			      l_message_props.correlation := sys_guid;
 			      l_message_props.priority := 3;
 			      l_message_props.expiration := in_timeout;
-			      l_message_props.recipient_list(1) := sys.aq$_agent(NULL, 'REQUESTS_AQ', 0);
 			      l_jms_message.header.set_replyto(sys.aq$_agent('PLSQL', 'RESPONSES_AQ', 0));
 			      l_jms_message.set_string_property('appName', 'Java');
 			      l_jms_message.set_string_property('beanName', 'PrimeFactorizationService');
@@ -87,7 +87,7 @@ class SyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests
 			BEGIN
 			   l_correlation := enqueue(in_number, in_timeout);
 			   RETURN dequeue(l_correlation, in_timeout);
-			END get_prime_factorization;
+			END get_prime_fact;
 		'''
 		jdbcTemplate.execute(stmt)
 	}
@@ -95,8 +95,8 @@ class SyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests
 	@Test()
 	def process() {
 		val stmt = '''
-			 SELECT rownum                                 AS input_number,
-			        aqdemo.get_prime_factorization(rownum) AS prime_factorization
+			 SELECT rownum                        AS input_number,
+			        aqdemo.get_prime_fact(rownum) AS prime_factorization
 			   FROM dual
 			CONNECT BY rownum <= 100
 		'''
@@ -106,6 +106,7 @@ class SyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests
 		for (p : primeFactorizations) {
 			logger.info('''prime factorization of «p.inputNumber»: «p.primeFactorization»''')
 		}
+		Assert.assertEquals(primeFactorizations.size,100)
 	}
 
 	@AfterClass
