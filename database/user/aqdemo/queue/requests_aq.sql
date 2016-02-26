@@ -4,7 +4,7 @@ BEGIN
       queue_name          => 'REQUESTS_AQ'
      ,queue_table         => 'REQUESTS_QT'
      ,max_retries         => 0
-     ,retry_delay         => 0 -- seconds
+     ,retry_delay         => 5 -- seconds
      ,retention_time      => 60*60*24*7 -- 1 week
    );
 END;
