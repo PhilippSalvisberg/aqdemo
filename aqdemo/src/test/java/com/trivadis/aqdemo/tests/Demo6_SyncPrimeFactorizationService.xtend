@@ -95,7 +95,7 @@ class Demo6_SyncPrimeFactorizationService extends AbstractTestNGSpringContextTes
 	@Test()
 	def process() {
 		val stmt = '''
-			 SELECT rownum                           AS input_number,
+			 SELECT rownum                          AS input_number,
 			       aqdemo.get_prime_fact(rownum, 1) AS prime_factorization
 			   FROM dual
 			CONNECT BY rownum <= 100
