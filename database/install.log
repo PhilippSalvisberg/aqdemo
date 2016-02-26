@@ -1,0 +1,57 @@
+======================================================================
+This script installs Oracle queue tables and queues used by the
+aqdemo Java command line application.
+
+Please connect to the target user aqdemo. This user and its
+associated tablespace aqdemo needs to be created in advance.
+See ./user/sys/tablespace/aqdemo.sql and ./usr/sys/account/aqdemo.sql
+======================================================================
+
+======================================================================
+create request and response queue tables
+======================================================================
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+======================================================================
+create request and response queues and enable enqueue/dequeue ops
+======================================================================
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+======================================================================
+create function to call a Java service synchronously
+======================================================================
+
+
+Function created.
+
+======================================================================
+test: enqueue a message for recipient APP_B
+======================================================================
+
+
+PL/SQL procedure successfully completed.
+
+======================================================================
+test: dequeue all messages for recipient/consumer APP_B
+======================================================================
+
+Hello App B!                                                                    
+
+PL/SQL procedure successfully completed.
+
