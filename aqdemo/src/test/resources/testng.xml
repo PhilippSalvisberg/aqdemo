@@ -2,32 +2,32 @@
 <suite name="aqdemo" parallel="methods" thread-count="4">
 	<test name="Demo1">
 		<classes>
-			<class name="com.trivadis.aqdemo.tests.SinglePrintTextServiceDemo" />
+			<class name="com.trivadis.aqdemo.tests.Demo1_SinglePrintTextService" />
 		</classes>
 	</test>
 	<test name="Demo2">
 		<classes>
-			<class name="com.trivadis.aqdemo.tests.MultiPrintTextServiceDemo" />
+			<class name="com.trivadis.aqdemo.tests.Demo2_MultiPrintTextService" />
 		</classes>
 	</test>
 	<test name="Demo3">
 		<classes>
-			<class name="com.trivadis.aqdemo.tests.BlockingSlowPrintTextServiceDemo" />
+			<class name="com.trivadis.aqdemo.tests.Demo3_BlockingSlowPrintTextService" />
 		</classes>
 	</test>
 	<test name="Demo4">
 		<classes>
-			<class name="com.trivadis.aqdemo.tests.NonBlockingSlowPrintTextServiceDemo" />
+			<class name="com.trivadis.aqdemo.tests.Demo4_NonBlockingSlowPrintTextService" />
 		</classes>
 	</test>
 	<test name="Demo5">
 		<classes>
-			<class name="com.trivadis.aqdemo.tests.AsyncPrimeFactorizationServiceDemo" />
+			<class name="com.trivadis.aqdemo.tests.Demo5_AsyncPrimeFactorizationService" />
 		</classes>
 	</test>
 	<test name="Demo6">
 		<classes>
-			<class name="com.trivadis.aqdemo.tests.SyncPrimeFactorizationServiceDemo" />
+			<class name="com.trivadis.aqdemo.tests.Demo6_SyncPrimeFactorizationService" />
 		</classes>
 	</test>
 </suite>

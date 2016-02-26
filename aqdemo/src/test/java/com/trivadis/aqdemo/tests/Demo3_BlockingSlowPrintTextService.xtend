@@ -12,14 +12,14 @@ import org.testng.annotations.Test
 
 @Test
 @ContextConfiguration(locations=#["file:src/test/resources/applicationContext.xml"])
-class NonBlockingSlowPrintTextServiceDemo extends AbstractTestNGSpringContextTests {
+class Demo3_BlockingSlowPrintTextService extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private DataSource aqDataSource
 	
 	private JdbcTemplate jdbcTemplate
 	private int currentInvocation;
 
-	private Logger logger = Logger.getLogger(NonBlockingSlowPrintTextServiceDemo)
+	private Logger logger = Logger.getLogger(Demo3_BlockingSlowPrintTextService)
 	
 	@BeforeClass
 	def setup() {
@@ -41,7 +41,6 @@ class NonBlockingSlowPrintTextServiceDemo extends AbstractTestNGSpringContextTes
 			   FOR i IN 1 .. 16
 			   LOOP
 			      l_jms_message.clear_properties();
-			      l_message_props.priority := 3;
 			      l_jms_message.set_string_property('appName', 'Java');
 			      l_jms_message.set_string_property('beanName', 'SlowPrintTextService');
 			      l_jms_message.set_text('Hello Slow Java Service ' || i || '!');
@@ -70,9 +69,7 @@ class NonBlockingSlowPrintTextServiceDemo extends AbstractTestNGSpringContextTes
 			   FOR i IN 1 .. 16
 			   LOOP
 			      l_jms_message.clear_properties();
-			      l_message_props.priority := 1;
 			      l_message_props.recipient_list(1) := sys.aq$_agent(NULL, 'REQUESTS_AQ', 0);
-			      l_jms_message.header.set_replyto(sys.aq$_agent('PLSQL', 'RESPONSES_AQ', 0));
 			      l_jms_message.set_string_property('appName', 'Java');
 			      l_jms_message.set_string_property('beanName', 'PrintTextService');
 			      l_jms_message.set_text('Hello Fast Java Service ' || i || '!');

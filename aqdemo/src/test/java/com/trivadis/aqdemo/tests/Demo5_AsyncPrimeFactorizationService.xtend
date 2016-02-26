@@ -19,7 +19,7 @@ import org.testng.annotations.Test
 
 @Test
 @ContextConfiguration(locations=#["file:src/test/resources/applicationContext.xml"])
-class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests {
+class Demo5_AsyncPrimeFactorizationService extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private DataSource aqDataSource
 
@@ -28,7 +28,7 @@ class AsyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTest
 
 	private JdbcTemplate jdbcTemplate
 
-	private Logger logger = Logger.getLogger(AsyncPrimeFactorizationServiceDemo)
+	private Logger logger = Logger.getLogger(Demo5_AsyncPrimeFactorizationService)
 
 	@BeforeClass
 	def setup() {

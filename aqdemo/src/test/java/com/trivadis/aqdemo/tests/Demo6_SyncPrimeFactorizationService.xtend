@@ -15,13 +15,13 @@ import org.testng.annotations.Test
 
 @Test
 @ContextConfiguration(locations=#["file:src/test/resources/applicationContext.xml"])
-class SyncPrimeFactorizationServiceDemo extends AbstractTestNGSpringContextTests {
+class Demo6_SyncPrimeFactorizationService extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private DataSource aqDataSource
 
 	private JdbcTemplate jdbcTemplate
 
-	private Logger logger = Logger.getLogger(SyncPrimeFactorizationServiceDemo)
+	private Logger logger = Logger.getLogger(Demo6_SyncPrimeFactorizationService)
 
 	@BeforeClass
 	def setup() {

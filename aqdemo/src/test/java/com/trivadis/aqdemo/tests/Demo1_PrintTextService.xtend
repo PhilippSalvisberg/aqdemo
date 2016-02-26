@@ -12,13 +12,13 @@ import org.testng.annotations.Test
 
 @Test
 @ContextConfiguration(locations=#["file:src/test/resources/applicationContext.xml"])
-class SinglePrintTextServiceDemo extends AbstractTestNGSpringContextTests {
+class Demo1_SinglePrintTextService extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private DataSource aqDataSource
 	
 	private JdbcTemplate jdbcTemplate
 
-	private Logger logger = Logger.getLogger(SinglePrintTextServiceDemo)
+	private Logger logger = Logger.getLogger(Demo1_SinglePrintTextService)
 	
 	@BeforeClass
 	def setup() {
