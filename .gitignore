@@ -2,7 +2,7 @@
 *._trace
 *.xtendbin
 *.DS_Store
-aqdemo.log
+*.log
 **/target
 **/test-output
 **/xtend-gen
