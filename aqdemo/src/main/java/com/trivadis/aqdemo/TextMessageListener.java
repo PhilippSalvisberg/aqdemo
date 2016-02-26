@@ -89,6 +89,7 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 					logger.debug("published response for message " + messageId + " (expires in "
 							+ Long.toString(timeToLive) + ").");
 				}
+				session.commit();
 			} else {
 				session.rollback(); // increment retry count / expire message
 				logger.error("No JMS property beanName found. Cannot process message.");
