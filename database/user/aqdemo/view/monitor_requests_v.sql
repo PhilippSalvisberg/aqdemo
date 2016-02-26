@@ -21,7 +21,7 @@ SELECT q.msgid AS msg_id,
        q.user_data.get_string_property('beanName') AS bean_name,
        q.user_data.text_vc AS msg_text,
        q.enq_time AS enq_timestamp,
-       q.deq_time AS status_update_timestamp, -- updated asynchronously, 30 seconds later than "real" dequeue time is not unusual
+       q.deq_time AS deq_timestamp, -- updated asynchronously, 30 seconds later than "real" dequeue time is not unusual
        q.deq_time - q.enq_time AS time_in_system -- time spent in the system until final status of message has be "registered" 
   FROM requests_qt q
   JOIN aq$_requests_qt_h h
