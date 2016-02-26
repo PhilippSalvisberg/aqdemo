@@ -45,6 +45,13 @@ PROMPT
 @./user/aqdemo/queue/responses_aq.sql
 
 PROMPT ======================================================================
+PROMPT create monitoring views 
+PROMPT ======================================================================
+PROMPT 
+@./user/aqdemo/view/monitor_requests_v.sql
+@./user/aqdemo/view/monitor_responses_v.sql
+
+PROMPT ======================================================================
 PROMPT create function to call a Java service synchronously 
 PROMPT ======================================================================
 PROMPT 

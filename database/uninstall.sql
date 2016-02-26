@@ -26,6 +26,20 @@ PROMPT Errors are thrown if an expected object does not exist.
 PROMPT ======================================================================
 
 PROMPT ======================================================================
+PROMPT drop monitoring views 
+PROMPT ======================================================================
+PROMPT 
+DROP VIEW monitor_requests_v;
+DROP VIEW monitor_responses_v;
+
+PROMPT ======================================================================
+PROMPT drop functions to call a Java service synchronously
+PROMPT ======================================================================
+PROMPT 
+
+DROP FUNCTION get_prime_fact;
+
+PROMPT ======================================================================
 PROMPT stop queues
 PROMPT ======================================================================
 PROMPT 
@@ -67,11 +81,5 @@ BEGIN
 END;
 /
 
-PROMPT ======================================================================
-PROMPT drop functions 
-PROMPT ======================================================================
-PROMPT 
-
-DROP FUNCTION get_prime_fact;
 
 SPOOL OFF
