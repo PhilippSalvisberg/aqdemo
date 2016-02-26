@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION get_prime_fact(in_number  IN INTEGER,
    PRAGMA AUTONOMOUS_TRANSACTION;
    l_correlation VARCHAR2(128);
    --
-   FUNCTION enqueue(in_payload IN INTEGER, in_timeout IN INTEGER) RETURN VARCHAR2 IS
+   FUNCTION enqueue(in_number IN INTEGER, in_timeout IN INTEGER) RETURN VARCHAR2 IS
       l_enqueue_options sys.dbms_aq.enqueue_options_t;
       l_message_props   sys.dbms_aq.message_properties_t;
       l_jms_message     sys.aq$_jms_text_message := sys.aq$_jms_text_message.construct;
@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION get_prime_fact(in_number  IN INTEGER,
       l_jms_message.header.set_replyto(sys.aq$_agent('PLSQL', 'RESPONSES_AQ', 0));
       l_jms_message.set_string_property('appName', 'Java');
       l_jms_message.set_string_property('beanName', 'PrimeFactorizationService');
-      l_jms_message.set_text(in_payload);
+      l_jms_message.set_text(in_number);
       dbms_aq.enqueue(queue_name         => 'aqdemo.requests_aq',
                       enqueue_options    => l_enqueue_options,
                       message_properties => l_message_props,

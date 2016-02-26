@@ -33,7 +33,7 @@ class Demo6_SyncPrimeFactorizationService extends AbstractTestNGSpringContextTes
 			   PRAGMA AUTONOMOUS_TRANSACTION;
 			   l_correlation VARCHAR2(128);
 			   --
-			   FUNCTION enqueue(in_payload IN INTEGER, in_timeout IN INTEGER) RETURN VARCHAR2 IS
+			   FUNCTION enqueue(in_number IN INTEGER, in_timeout IN INTEGER) RETURN VARCHAR2 IS
 			      l_enqueue_options sys.dbms_aq.enqueue_options_t;
 			      l_message_props   sys.dbms_aq.message_properties_t;
 			      l_jms_message     sys.aq$_jms_text_message := sys.aq$_jms_text_message.construct;
@@ -46,7 +46,7 @@ class Demo6_SyncPrimeFactorizationService extends AbstractTestNGSpringContextTes
 			      l_jms_message.header.set_replyto(sys.aq$_agent('PLSQL', 'RESPONSES_AQ', 0));
 			      l_jms_message.set_string_property('appName', 'Java');
 			      l_jms_message.set_string_property('beanName', 'PrimeFactorizationService');
-			      l_jms_message.set_text(in_payload);
+			      l_jms_message.set_text(in_number);
 			      dbms_aq.enqueue(queue_name         => 'aqdemo.requests_aq',
 			                      enqueue_options    => l_enqueue_options,
 			                      message_properties => l_message_props,
@@ -95,18 +95,23 @@ class Demo6_SyncPrimeFactorizationService extends AbstractTestNGSpringContextTes
 	@Test()
 	def process() {
 		val stmt = '''
-			 SELECT rownum                        AS input_number,
-			        aqdemo.get_prime_fact(rownum) AS prime_factorization
+			 SELECT rownum                           AS input_number,
+			       aqdemo.get_prime_fact(rownum, 1) AS prime_factorization
 			   FROM dual
 			CONNECT BY rownum <= 100
 		'''
-		jdbcTemplate.fetchSize = 100
+		jdbcTemplate.fetchSize = 20
+		var int resultCount = 0
+		var int rowCount = 0
 		val primeFactorizations = jdbcTemplate.query(stmt,
 			new BeanPropertyRowMapper<PrimeFactorization>(PrimeFactorization))
 		for (p : primeFactorizations) {
+			rowCount++
+			resultCount += if (p.primeFactorization != null) {1} else {0}
 			logger.info('''prime factorization of «p.inputNumber»: «p.primeFactorization»''')
 		}
-		Assert.assertEquals(primeFactorizations.size,100)
+		Assert.assertEquals(rowCount, 100)
+		Assert.assertEquals(resultCount, 99)
 	}
 
 	@AfterClass
