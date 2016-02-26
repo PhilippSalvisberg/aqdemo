@@ -48,7 +48,7 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 			messageId = request.getJMSMessageID();
 			logger.debug("processing message " + messageId + "...");
 
-			// prepare response
+			// prepare "empty" response
 			TextMessage response = null;
 			AQjmsAgent replyTo = (AQjmsAgent) request.getJMSReplyTo();
 			if (replyTo != null) {
@@ -68,12 +68,24 @@ public class TextMessageListener implements SessionAwareMessageListener<TextMess
 				service.process(request, response);
 				logger.debug("service " + beanName + " processed for message " + messageId + ".");
 				if (response != null) {
+					// create a publisher using the current database session (connection)
 					Topic topic = session.createTopic(responseQueueName);
 					AQjmsTopicPublisher publisher = (AQjmsTopicPublisher) ((TopicSession) session)
 							.createPublisher(topic);
 					AQjmsAgent[] recipients = { replyTo };
+					// inherit message expiration from request
+					long timeToLive;
+					long jmsExpiration = request.getJMSExpiration();
+					if (jmsExpiration > 0) {
+						timeToLive = jmsExpiration - request.getJMSTimestamp();
+					} else {
+						timeToLive = -1; // forever
+					}
+					publisher.setTimeToLive(timeToLive);
+					// ready to publish response
 					publisher.publish(response, recipients);
-					logger.debug("published response for message " + messageId + ".");
+					logger.debug("published response for message " + messageId + " (expires in "
+							+ Long.toString(timeToLive) + ").");
 				}
 			} else {
 				logger.error("No JMS property beanName found. Cannot process message.");
