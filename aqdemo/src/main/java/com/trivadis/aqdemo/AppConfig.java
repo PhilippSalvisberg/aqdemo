@@ -77,17 +77,17 @@ public class AppConfig {
 	public DefaultMessageListenerContainer highPriorityJmsContainer() {
 		logger.info("highPriorityJmsContainer() called.");
 		DefaultMessageListenerContainer cont = new DefaultMessageListenerContainer();
+		cont.setMessageListener(messageListener());
 		cont.setConnectionFactory(connectionFactory());
 		cont.setDestinationName(requestQueueName);
-		cont.setMessageSelector("(JMSPriority IN (1,2) and appName = '" + appName + "')");
-		cont.setMessageListener(messageListener());
 		cont.setPubSubDomain(true);
 		cont.setSubscriptionName(appName + "_High_Priority");
 		cont.setSubscriptionDurable(true); // allow enqueue when service is down
+		cont.setMessageSelector("(JMSPriority IN (1,2) and appName = '" + appName + "')");
 		cont.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
 		cont.setSessionTransacted(true);
 		cont.setConcurrency(concurrency);
-		cont.setMaxMessagesPerTask(10);
+		cont.setMaxMessagesPerTask(1);
 		return cont;
 	}
 
@@ -95,13 +95,13 @@ public class AppConfig {
 	public DefaultMessageListenerContainer lowPriorityJmsContainer() {
 		logger.info("lowPriorityJmsContainer() called.");
 		DefaultMessageListenerContainer cont = new DefaultMessageListenerContainer();
+		cont.setMessageListener(messageListener());
 		cont.setConnectionFactory(connectionFactory());
 		cont.setDestinationName(requestQueueName);
-		cont.setMessageSelector("(JMSPriority > 2 and appName = '" + appName + "')");
-		cont.setMessageListener(messageListener());
 		cont.setPubSubDomain(true);
 		cont.setSubscriptionName(appName + "_Low_Priority");
 		cont.setSubscriptionDurable(true); // allow enqueue when service is down
+		cont.setMessageSelector("(JMSPriority > 2 and appName = '" + appName + "')");
 		cont.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
 		cont.setSessionTransacted(true);
 		cont.setConcurrency(concurrency);
