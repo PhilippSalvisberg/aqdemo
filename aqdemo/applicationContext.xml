@@ -15,7 +15,7 @@
 	<!-- ========================================================================== -->
 
 	<bean id="aqUrl" class="java.lang.String">
-		<constructor-arg value="jdbc:oracle:thin:@titisee.trivadis.com:1521/phspdb2" />
+		<constructor-arg value="jdbc:oracle:thin:@localhost:1521:odb" />
 	</bean>
 
 	<bean id="aqUserName" class="java.lang.String">

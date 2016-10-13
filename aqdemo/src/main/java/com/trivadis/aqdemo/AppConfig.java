@@ -29,7 +29,7 @@ public class AppConfig {
 
 	@Autowired(required = false)
 	@Qualifier("aqUrl")
-	private String aqUrl = "jdbc:oracle:thin:@titisee.trivadis.com:1521/phspdb2";
+	private String aqUrl = "jdbc:oracle:thin:@localhost:1521:odb";
 
 	@Autowired(required = false)
 	@Qualifier("aqUserName")
