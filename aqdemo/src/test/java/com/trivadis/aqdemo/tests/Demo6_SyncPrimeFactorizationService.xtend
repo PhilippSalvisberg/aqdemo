@@ -107,7 +107,7 @@ class Demo6_SyncPrimeFactorizationService extends AbstractTestNGSpringContextTes
 			new BeanPropertyRowMapper<PrimeFactorization>(PrimeFactorization))
 		for (p : primeFactorizations) {
 			rowCount++
-			resultCount += if (p.primeFactorization != null) {1} else {0}
+			resultCount += if (p.primeFactorization !== null) {1} else {0}
 			logger.info('''prime factorization of «p.inputNumber»: «p.primeFactorization»''')
 		}
 		Assert.assertEquals(rowCount, 100)
