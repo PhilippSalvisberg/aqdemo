@@ -117,10 +117,10 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<copy failonerror="true" file="applicationContext.xml"
 									toFile="target/applicationContext.xml" />
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
@@ -194,7 +194,7 @@
 		<dependency>
 			<groupId>oracle</groupId>
 			<artifactId>ojdbc8</artifactId>
-			<version>12.2.0.</version>
+			<version>12.2.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/ojdbc8.jar</systemPath>
 		</dependency>
