@@ -116,10 +116,18 @@ public class AppConfig {
 		try {
 			pds.setConnectionFactoryClassName("oracle.jdbc.OracleDriver");
 			String url = aqUrl;
+			// see https://docs.oracle.com/database/122/JJUAR/oracle/ucp/jdbc/PoolDataSource.html
 			pds.setURL(url);
 			pds.setUser(aqUserName);
 			pds.setPassword(aqPassword);
-			pds.setInactiveConnectionTimeout(60);
+			// close inactive connections within the pool after 60 seconds
+			pds.setInactiveConnectionTimeout(60); 
+			// return inactive connections to the pool after 60 seconds, e.g. to recover from network failure
+			pds.setAbandonedConnectionTimeout(60); 
+			// allow a borrowed connection to be used infinitely, required for long running transactions 
+			pds.setTimeToLiveConnectionTimeout(0);
+			// check all timeout settings every 30 seconds
+			pds.setTimeoutCheckInterval(30);
 		} catch (SQLException e) {
 			throw new RuntimeException("driver not found");
 		}
