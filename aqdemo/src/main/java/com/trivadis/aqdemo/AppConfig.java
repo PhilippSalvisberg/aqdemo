@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.jms.support.destination.PollingDefaultMessageListenerContainer;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -55,6 +55,14 @@ public class AppConfig {
 	@Qualifier("concurrency")
 	private String concurrency = "1-4";
 	
+	@Autowired(required = false)
+	@Qualifier("receiveTimeout")
+	private Integer receiveTimeout = -1;
+	
+	@Autowired(required = false)
+	@Qualifier("noWaitIdlePollingInterval")
+	private Integer noWaitIdlePollingInterval = 1000;
+	
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		logger.info("connectionFactory() called.");
@@ -74,9 +82,9 @@ public class AppConfig {
 	}
 
 	@Bean
-	public DefaultMessageListenerContainer highPriorityJmsContainer() {
+	public PollingDefaultMessageListenerContainer highPriorityJmsContainer() {
 		logger.info("highPriorityJmsContainer() called.");
-		DefaultMessageListenerContainer cont = new DefaultMessageListenerContainer();
+		PollingDefaultMessageListenerContainer cont = new PollingDefaultMessageListenerContainer();
 		cont.setMessageListener(messageListener());
 		cont.setConnectionFactory(connectionFactory());
 		cont.setDestinationName(requestQueueName);
@@ -88,13 +96,16 @@ public class AppConfig {
 		cont.setSessionTransacted(true);
 		cont.setConcurrency(concurrency);
 		cont.setMaxMessagesPerTask(1);
+		// to resume after network failure
+		cont.setReceiveTimeout(receiveTimeout);
+		cont.setNoWaitIdlePollingInterval(noWaitIdlePollingInterval);
 		return cont;
 	}
 
 	@Bean
-	public DefaultMessageListenerContainer lowPriorityJmsContainer() {
+	public PollingDefaultMessageListenerContainer lowPriorityJmsContainer() {
 		logger.info("lowPriorityJmsContainer() called.");
-		DefaultMessageListenerContainer cont = new DefaultMessageListenerContainer();
+		PollingDefaultMessageListenerContainer cont = new PollingDefaultMessageListenerContainer();
 		cont.setMessageListener(messageListener());
 		cont.setConnectionFactory(connectionFactory());
 		cont.setDestinationName(requestQueueName);
@@ -106,6 +117,9 @@ public class AppConfig {
 		cont.setSessionTransacted(true);
 		cont.setConcurrency(concurrency);
 		cont.setMaxMessagesPerTask(1);
+		// to resume after network failure
+		cont.setReceiveTimeout(receiveTimeout);
+		cont.setNoWaitIdlePollingInterval(noWaitIdlePollingInterval);
 		return cont;
 	}
 	

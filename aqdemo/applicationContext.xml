@@ -29,4 +29,17 @@
 	<bean id="concurrency" class="java.lang.String">
 		<constructor-arg value="1-4" />
 	</bean>
+
+	<!-- (-1) "NoWait" ensures that listener continues to work after network failure -->	
+	<bean id="receiveTimeout" class="java.lang.Integer">
+		<constructor-arg value="-1" />
+	</bean>
+	
+	<!-- Reduces thread creation interval when setting receiveTimeout < 0 -->	
+	<!-- works with PollingDefaultMessageListenerContainer only -->
+	<bean id="noWaitIdlePollingInterval" class="java.lang.Integer">
+		<constructor-arg value="1000" />
+	</bean>
+
+
 </beans>
