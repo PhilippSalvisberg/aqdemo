@@ -122,8 +122,11 @@ public class AppConfig {
 			pds.setPassword(aqPassword);
 			// close inactive connections within the pool after 60 seconds
 			pds.setInactiveConnectionTimeout(60); 
-			// return inactive connections to the pool after 60 seconds, e.g. to recover from network failure
-			pds.setAbandonedConnectionTimeout(60); 
+			// return inactive connections to the pool after ... seconds, e.g. to recover from network failure
+			// if connection is idle for the configured number of seconds, but but JMS based operation is
+			// not yet completed, then the session is returned to the pool, even if a subsequent response and
+			// commit would have been possible. Hence this timeout is set to 0.
+			pds.setAbandonedConnectionTimeout(0); 
 			// allow a borrowed connection to be used infinitely, required for long running transactions 
 			pds.setTimeToLiveConnectionTimeout(0);
 			// check all timeout settings every 30 seconds
